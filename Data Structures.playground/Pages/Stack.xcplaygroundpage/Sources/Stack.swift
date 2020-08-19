@@ -4,6 +4,9 @@ import Foundation
 public struct Stack<Element> {
     private var storage: [Element] = []
     public init() {}
+    public init(_ elements: [Element]) {
+        storage = elements
+    }
 }
 extension Stack {
     /// 스택의 push 연산
@@ -33,7 +36,13 @@ extension Stack {
         peek() == nil
     }
 }
-    
+// MARK: Stack+ExpressibleByArrayLiteral
+extension Stack: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: Element...) {
+        storage = elements
+    }
+}
+// MARK: Stack+CustomStringConvertible
 extension Stack: CustomStringConvertible {
     public var description: String {
         """

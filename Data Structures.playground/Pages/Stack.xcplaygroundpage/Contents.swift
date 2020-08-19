@@ -2,30 +2,16 @@
 
 import Foundation
 
-public struct Stack<Element> {
-    private var storage: [Element] = []
+example(of: "Test") {
+    var stack = Stack<Int>()
+    stack.push(1)
+    stack.push(2)
+    stack.pop()
     
-    public init() {}
-}
-extension Stack {
-    public mutating func push(_ element: Element) {
-        storage.append(element)
-    }
-}
-extension Stack {
-    public mutating func pop() -> Element? {
-        storage.popLast()
-    }
-}
-    
-extension Stack: CustomStringConvertible {
-    public var description: String {
-        """
-        ----top----
-        \(storage.map { "\($0)" }
-        .reversed()
-        .joined(separator: "\n"))
-        """
-    }
+    print(stack)
 }
 
+func example(of message: String, codes: () -> Void) {
+    print("Examples of \(message)\n")
+    codes()
+}

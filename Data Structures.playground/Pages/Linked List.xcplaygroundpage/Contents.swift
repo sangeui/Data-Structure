@@ -41,9 +41,38 @@ extension LinkedList {
     // 따라서 연결 리스트의 더하기 연산에는
     // 1. Push (앞) 2. Append (뒤) 3. Insert (중간)
     // 총 세 가지의 연산이 있다.
-    public func push(value: Value) {}
-    public func append(value: Value) {}
-    public func insert(value: Value, after node: Node<Value>) -> Node<Value> {}
+    public mutating func push(value: Value) {
+        // 연결 리스트의 가장 앞에 파라미터로 전달 받은 값을 갖는 노드를 더함.
+        head = Node(value: value, next: head)
+        if tail == nil { tail = head }
+    }
+    public mutating func append(value: Value) {
+        // 연결 리스트의 마지막에 파라미터로 전달 받은 값을 갖는 노드를 더함.
+        guard isEmpty == false else {
+            push(value: value)
+            return
+        }
+        tail!.next = Node(value: value)
+        tail = tail!.next
+    }
+    @discardableResult
+    public mutating func insert(value: Value, after node: Node<Value>) -> Node<Value> {
+        // 파라미터로 전달 받은 노드의 뒤에 value 값을 갖는 노드를 더함.
+        // 기준 노드를 인자로 전달 받으므로 해당 노드를 탐색할 수 있는 헬퍼 메소드가 필요함.
+        guard tail !== node else {
+            // 연결 리스트의 마지막 노드가 탐색된 노드라면 바로 append 메소드를 호출하고 리턴.
+            append(value: value)
+            return tail!
+        }
+        
+        node.next = Node(value: value, next: node.next)
+        
+        return node.next!
+    }
+}
+// MARK: - Helper Methods
+extension LinkedList {
+    
 }
 extension LinkedList: CustomStringConvertible {
     public var description: String {

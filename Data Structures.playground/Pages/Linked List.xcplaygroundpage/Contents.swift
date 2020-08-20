@@ -2,6 +2,21 @@
 
 import Foundation
 
+var list = LinkedList<Int>()
+list.push(value: 3)
+list.push(value: 2)
+
+print(list)
+
+list.append(value: 4)
+
+print(list)
+
+if let node = list.search(at: 1) {
+    list.insert(value: 1, after: node)
+    print(list)
+}
+
 // Value 타입의 값과 다음 Node 를 옵셔널로 가짐
 // Node 만으로도 연결된 리스트를 구성할 수 있지만
 // 실용적이지 못하므로 Linked List 라는 노드 컨테이너를 만들어 이를 관리한다.
@@ -72,7 +87,19 @@ extension LinkedList {
 }
 // MARK: - Helper Methods
 extension LinkedList {
-    
+    public func search(at index: Int) -> Node<Value>? {
+        // 인자로 전달 받은 정수 값에 해당하는 인덱스의 노드를 찾는다.
+        var currentNode = head
+        var currentIndex = 0
+        
+        while currentNode != nil && currentIndex < index {
+            // head 부터 시작하여 순차 탐색을 하므로 O(n) 의 계산 복잡도를 가진다.
+            currentNode = currentNode!.next
+            currentIndex += 1
+        }
+        
+        return currentNode
+    }
 }
 extension LinkedList: CustomStringConvertible {
     public var description: String {

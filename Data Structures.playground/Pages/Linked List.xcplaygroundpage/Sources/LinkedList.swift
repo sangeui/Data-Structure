@@ -63,7 +63,7 @@ extension LinkedList {
     }
     @discardableResult
     public mutating func remove(after node: Node<Value>) -> Value? {
-        copyNodes()
+        guard let node = copyNodes(returningCopyOf: node) else { return nil }
         // 전달 받은 node 다음의 값을 가져오는 메소드.
         // node 의 next 는 리턴될 값을 가지는 노드의 다음 노드가 될 것. 즉, node.next.next
         // 만일 next 가 더이상 존재하지 않는다면 이는 node 가 tail 이므로
@@ -132,14 +132,27 @@ extension LinkedList {
         return currentNode
     }
 }
-// Value semantics and copy-on-write (COW)
+// MARK: - Value semantics and copy-on-write (COW)
 extension LinkedList {
     private mutating func copyNodes() {
         /*
          이 메소드의 방식은 매 mutating 메소드 호출마다
          O(n) 의 오버헤드를 발생시킨다.
+        
+         이는 `isKnownUniquelyReferenced 메소드로 해결한다.`
          */
         
+        // head 의 참조 카운트가 2 이상이라면 true 를 리턴하여
+        // 아래 guard statement 를 통과한다.
+        guard
+            !isKnownUniquelyReferenced(&head),
+            head !== tail
+            else {
+            print("[INFO] `copyNodes` not executed")
+            return
+        }
+        print(isKnownUniquelyReferenced(&head))
+        print("[INFO] `copyNodes` executed")
         // 비어있는 연결 리스트라면 리턴하고 종료한다.
         guard var oldNode = head else { return }
         // head 에 원래 head 의 값을 가지는 새로운 Node 객체를 할당한다.
@@ -162,6 +175,36 @@ extension LinkedList {
         // 따라서 이 newNode 를 새로운 tail 로 할당한다.
         tail = newNode
     }
+    private mutating func copyNodes(returningCopyOf node: Node<Value>?) -> Node<Value>? {
+        guard
+            !isKnownUniquelyReferenced(&head),
+            head !== tail
+        else {
+            print("[INFO] failed the first guard statement")
+            print("\(isKnownUniquelyReferenced(&head))")
+            return head
+        }
+        guard var oldNode = head else {
+            print("[INFO] failed the second guard statement")
+            return nil
+        }
+        
+        head = Node(value: oldNode.value)
+        var newNode = head
+        var nodeCopy: Node<Value>?
+        
+        while let nextOldNode = oldNode.next {
+            if oldNode === node {
+                nodeCopy = newNode
+            }
+            
+            newNode!.next = Node(value: nextOldNode.value)
+            newNode = newNode!.next
+            oldNode = nextOldNode
+        }
+        return nodeCopy
+    }
+
 }
 
 extension LinkedList: CustomStringConvertible {

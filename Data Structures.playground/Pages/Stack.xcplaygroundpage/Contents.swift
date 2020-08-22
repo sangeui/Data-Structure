@@ -14,7 +14,7 @@ literalStack.push(1)
 literalStack.push(2)
 literalStack.pop()
 
-// Challenge 1: Reverse an Array
+// MARK: - Challenge 1: Reverse an Array
 // Create a function that prints the contents of an array in reversed order
 func challenge1<T>(array: [T]) {
     var stack = Stack<T>()
@@ -28,7 +28,7 @@ func challenge1<T>(array: [T]) {
 
 challenge1(array: [1, 2, 3, 4, 5])
 
-// Challenge 2: Balance the parentheses
+// MARK: - Challenge 2: Balance the parentheses
 // Check for balanced parantheses. Given a string, check if there are '(' and ')' characters, and return true
 // if the parentheses in the string are balanced.
 func challenge2(string: String) -> Bool {

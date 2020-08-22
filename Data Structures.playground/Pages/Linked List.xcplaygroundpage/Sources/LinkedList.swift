@@ -23,6 +23,7 @@ extension LinkedList {
     // 1. pop (앞) 2. removeLast (뒤) 3. remove (중간)
     @discardableResult
     public mutating func pop() -> Value? {
+        copyNodes()
         defer {
             // 헤드 값을 가져갔으므로 헤드의 다음 노드를 헤드로 만든다.
             head = head?.next
@@ -34,6 +35,7 @@ extension LinkedList {
         return head?.value
     }
     public mutating func removeLast() -> Value? {
+        copyNodes()
         // 비어있는 리스트이므로 nil 을 리턴한다.
         guard let head = head else { return nil }
         // 노드 하나만 존재하는 리스트이므로 pop 메소드를 리턴한다.
@@ -61,6 +63,7 @@ extension LinkedList {
     }
     @discardableResult
     public mutating func remove(after node: Node<Value>) -> Value? {
+        copyNodes()
         // 전달 받은 node 다음의 값을 가져오는 메소드.
         // node 의 next 는 리턴될 값을 가지는 노드의 다음 노드가 될 것. 즉, node.next.next
         // 만일 next 가 더이상 존재하지 않는다면 이는 node 가 tail 이므로
@@ -82,11 +85,13 @@ extension LinkedList {
     // 1. Push (앞) 2. Append (뒤) 3. Insert (중간)
     // 총 세 가지의 연산이 있다.
     public mutating func push(value: Value) {
+        copyNodes()
         // 연결 리스트의 가장 앞에 파라미터로 전달 받은 값을 갖는 노드를 더함.
         head = Node(value: value, next: head)
         if tail == nil { tail = head }
     }
     public mutating func append(value: Value) {
+        copyNodes()
         // 연결 리스트의 마지막에 파라미터로 전달 받은 값을 갖는 노드를 더함.
         guard isEmpty == false else {
             push(value: value)
@@ -97,6 +102,7 @@ extension LinkedList {
     }
     @discardableResult
     public mutating func insert(value: Value, after node: Node<Value>) -> Node<Value> {
+        copyNodes()
         // 파라미터로 전달 받은 노드의 뒤에 value 값을 갖는 노드를 더함.
         // 기준 노드를 인자로 전달 받으므로 해당 노드를 탐색할 수 있는 헬퍼 메소드가 필요함.
         guard tail !== node else {
@@ -126,6 +132,38 @@ extension LinkedList {
         return currentNode
     }
 }
+// Value semantics and copy-on-write (COW)
+extension LinkedList {
+    private mutating func copyNodes() {
+        /*
+         이 메소드의 방식은 매 mutating 메소드 호출마다
+         O(n) 의 오버헤드를 발생시킨다.
+         */
+        
+        // 비어있는 연결 리스트라면 리턴하고 종료한다.
+        guard var oldNode = head else { return }
+        // head 에 원래 head 의 값을 가지는 새로운 Node 객체를 할당한다.
+        head = Node(value: oldNode.value)
+        // 새 변수 newNode 가 head 를 가리키도록 한다.
+        var newNode = head
+        // oldNode 가 마지막 노드가 될 때까지 루프를 실행한다.
+        while let nextOldNode = oldNode.next {
+            // newNode 의 다음 노드는 nextOldNode 의 값을 가지는 새로운 노드가 된다.
+            newNode!.next = Node(value: nextOldNode.value)
+            // newNode 를 newNode 의 다음을 가리키도록 한다.
+            newNode = newNode!.next
+            // oldNode 또한 nextOldNode 를 가리키도록 한다.
+            oldNode = nextOldNode
+        }
+        
+        // while statement 를 종료했다는 것은
+        // oldNode 의 다음 노드가 존재하지 않았으며
+        // newNode 는 현재 이 oldNode (tail) 의 값을 가진 노드가 된다.
+        // 따라서 이 newNode 를 새로운 tail 로 할당한다.
+        tail = newNode
+    }
+}
+
 extension LinkedList: CustomStringConvertible {
     public var description: String {
         guard let head = head else { return "Empty List" }

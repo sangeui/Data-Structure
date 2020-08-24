@@ -52,10 +52,20 @@ public protocol Queue {
 Queue 를 구현하는 방법 중 가장 간단하다. 
 Array 를 Data 컨테이너로써 선언하고 Array 의 메소드를 이용해 Queue 를 조작할 수 있다.
 
-Array 를 아래 메소드를 사용할 수 있다.
-
+###### QueueArray 의 기본 골격
 ```swift
-append(_:), removeFirst()
+public struct QueueArray<T>: Queue {
+	private var array: [T] = []
+	public init() {}
+}
+```
+
+###### Enqueue · Dequeue
+```swift
+public mutating func enqueue(_ element: T) -> Bool {
+	array.append(element)
+	return true
+}
 ```
 
 ##### QueueLinkedList

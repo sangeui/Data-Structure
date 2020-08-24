@@ -72,7 +72,26 @@ public mutating func dequeue() -> T? {
 ```
 
 ###### Pros and Cons
-개발자들이 친숙한 Array 로 구현했기 때문에 아주 쉽게 구현될 수 있다.
+개발자들이 친숙한 Array 로 구현했기 때문에 아주 쉽게 구현될 수 있다. 
+하지만 쉽게 구현이 된 만큼 여기에는 성능의 문제가 발생한다. 
+
+|Operations|Average case|Worst case|
+|--|--|--|
+|enqueue|O(1)|O(n)
+|dequeue|O(n)|O(n)
+|Space Complexity|O(n)|O(n)
+
+위 테이블에서 알 수 있듯이 enqueue 연산의 에버리지 케이스를 제외하고 모두 O(n) 의 시간복잡도를 가지고 있음을 알 수 있다. 
+
+첫번째로 enqueue 의 경우 Array 공간이 가득 차게 되면 **Resizing** 이 발생하는데, 이는 새로운 메모리 공간을 할당하여 이 곳으로 기존 Array 를 옮기는 작업이 요구된다. 
+
+따라서 대부분의 enqueue 연산이 Constant 복잡도를 가질 수 있겠지만, Array 가 가득 차게 된 경우에는 O(n) 의 복잡도를 가지게 된다.
+
+두번째, dequeue 에서는 Array 의 첫번째 엘리먼트를 제거하는 메소드를 사용했다. 이는 뒤에 있는 엘리먼트들을 앞으로 당기는 작업이 필요하므로 O(n) 의 복잡도를 가지는 것은 당연하다. 
+
+---
+
+따라서 배열을 이용한 Queue 의 구현은 간단할지 몰라도 보다 나은 성능이 요구된다면 다른 방법을 이용해야 할 것이다. 
 
 
 ##### QueueLinkedList

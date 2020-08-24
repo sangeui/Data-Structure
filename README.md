@@ -66,7 +66,14 @@ public mutating func enqueue(_ element: T) -> Bool {
 	array.append(element)
 	return true
 }
+public mutating func dequeue() -> T? {
+	isEmpty ? nil : array.removeFirst()
+}
 ```
+
+###### Pros and Cons
+개발자들이 친숙한 Array 로 구현했기 때문에 아주 쉽게 구현될 수 있다.
+
 
 ##### QueueLinkedList
 ##### QueueRingBuffer

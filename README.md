@@ -1,3 +1,10 @@
+##### Table of Contents
+[Stack](#stack)  
+[Queues](#queues)  
+[QueueArray](#queuearray) (array based queue)
+
+---
+
 #### Stack
 #### Queues
 
@@ -25,10 +32,10 @@ Queue 는 Array, Doubly linked list 등 다양한 방법으로 구현이 될 수
 
 ---
 
-##### Array based Queue Implementation
+##### QueueArray
 
 Queue 를 구현하는 방법 중 가장 간단하다. 
 
-##### Linked list based Queue Implementation
-##### Ring buffer based Queue Implementation
+##### QueueLinkedList
+##### QueueRingBuffer
 

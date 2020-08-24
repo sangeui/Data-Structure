@@ -1,7 +1,7 @@
 ### Table of Contents
-[Stack](#stack)  
-[Queues](#queues)  
-[QueueArray](#queuearray) (array based queue)
+- [Stack](#stack)  
+- [Queues](#queues)  
+-- [QueueArray](#queuearray) (array based queue)
 
 ---
 

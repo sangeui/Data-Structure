@@ -33,9 +33,30 @@ Queue 는 Array, Doubly linked list 등 다양한 방법으로 구현이 될 수
 
 ---
 
+##### Protocol
+위에 언급된 Queue 의 기본 오퍼레이터들을 갖는 프로토콜이다. 
+```swift
+public protocol Queue {
+	associatedType Element
+	// Key methods
+	mutating func enqueue(_ element: Element) -> Bool
+	mutating func dequeue() -> Element?
+	// Supplementary methods
+	var isEmpty: Bool { get }
+	var peek: Element? { get }
+}
+```
+
 ##### QueueArray
 
 Queue 를 구현하는 방법 중 가장 간단하다. 
+Array 를 Data 컨테이너로써 선언하고 Array 의 메소드를 이용해 Queue 를 조작할 수 있다.
+
+Array 를 아래 메소드를 사용할 수 있다.
+
+```swift
+append(_:), removeFirst()
+```
 
 ##### QueueLinkedList
 ##### QueueRingBuffer

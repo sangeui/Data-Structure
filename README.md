@@ -23,4 +23,12 @@ Queue 는 Array, Doubly linked list 등 다양한 방법으로 구현이 될 수
 
 이 주요 행위들을 제외하고, 부수적으로 Queue 가 비어 있는지, 첫번째 값은 무엇인지 들여다보는 등의 행위들이 포함될 수 있다. 
 
+---
+
+##### Array based Queue Implementation
+
+Queue 를 구현하는 방법 중 가장 간단하다. 
+
+##### Linked list based Queue Implementation
+##### Ring buffer based Queue Implementation
 

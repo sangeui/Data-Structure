@@ -3,5 +3,4 @@
 
 ---
 
-<p>TEST README</p>
 

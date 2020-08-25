@@ -1,9 +1,9 @@
 ### Table of Contents
 - [Stack](#stack)  
 - [Queues](#queues)  
-	-  [Queue based Array](#queuearray)
-	- [Queue based Linked List](#queuelinkedlist)
-	- [Queue based Ring Buffer](#queueringbuffer)
+	-  [Array based Queue](#queuearray)
+	- [Linked list based Queue](#queuelinkedlist)
+	- [Ring buffer based Queue](#queueringbuffer)
 		- [Ring Buffer](#ringbuffer)
 
 ---

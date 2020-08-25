@@ -100,3 +100,43 @@ public mutating func dequeue() -> T? {
 ##### QueueLinkedList
 ##### QueueRingBuffer
 ##### RingBuffer
+
+링 버퍼 또는 원형 버퍼 (A circular buffer) 라고도 부른다. 
+
+배열로 구현이 되긴 하지만 배열의 마지막 인덱스에 도달한 후 다시 쓰기 동작을 하려면 첫 인덱스로 돌아와야 한다. 
+
+이는 마치 배열을 구부려서 원형으로 만든 것과 같다. 
+
+한가지 특별한 것은 배열의 인덱스를 위해 두가지 변수를 사용한다. 
+
+- 첫번째는 write 인덱스로써, 값을 넣기 위한 인덱스를 의미한다.
+- 두번째는 read 인덱스로써, 다음 read 연산이 실행되면 해당 인덱스의 값을 불러온다.
+
+###### 초기 Ring buffer
+||[|nil|nil|nil|]|
+|--|--|--|--|--|--|
+|write index||w|||
+|read index||r|||
+
+위 테이블을 통해 아주 단순한 Ring buffer 를 그렸다. 현재 배열의 각 메모리 공간에는 값이 주어지지 않은 상태이며, ```w```, ```r``` 의 표현을 통해 각각 write 포인터와 read 포인터가 배열의 첫 인덱스에 위치하고 있음을 알 수 있다. 
+
+또한 write 와 read 가 같은 인덱스를 가리키고 있다는 것은 곧, Ring buffer 가 비어있음을 의미한다.
+
+###### 값을 하나 더한 이후의 Ring buffer 
+||[|1|nil|nil|]|
+|--|--|--|--|--|--|
+|write index||→|w||
+|read index||r|||
+
+1 을 Ring buffer 에 넣었다고 가정했을 때, 배열의 내부 표현 뿐 아니라 write index 의 위치도 변했음을 알 수 있다. 
+여기에서는 write 연산을 실행했으므로 read index 는 그대로 두고, ```write index``` 만 움직였다. 
+
+###### 배열를 가득 채운 후 값을 하나 뺀 Ring buffer
+
+차례대로 2, 3 을 ring buffer 에 집어넣고 read 연산을 한번 실행했을 때의 테이블이다.
+||[|1|2|3|]|
+|--|--|--|--|--|--|
+|write index||-|-|→|w
+|read index||→|r||
+
+우리는 read 연산을 통해 read index 가 가리키던 첫번째 값을 가져왔고, 이 인덱스를 하나 증가시켰음을 볼 수 있다. 

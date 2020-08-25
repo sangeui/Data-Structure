@@ -1,7 +1,10 @@
 ### Table of Contents
 - [Stack](#stack)  
 - [Queues](#queues)  
-	-  [QueueArray](#queuearray) (array based queue)
+	-  [Queue based Array](#queuearray)
+	- [Queue based Linked List](#queuelinkedlist)
+	- [Queue based Ring Buffer](#queueringbuffer)
+		- [Ring Buffer](#ringbuffer)
 
 ---
 
@@ -96,4 +99,4 @@ public mutating func dequeue() -> T? {
 
 ##### QueueLinkedList
 ##### QueueRingBuffer
-
+##### Ring Buffer

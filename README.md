@@ -99,4 +99,4 @@ public mutating func dequeue() -> T? {
 
 ##### QueueLinkedList
 ##### QueueRingBuffer
-##### Ring Buffer
+##### RingBuffer

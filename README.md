@@ -5,7 +5,7 @@
 	- [Linked list based Queue](#queuelinkedlist)
 	- [Ring buffer based Queue](#queueringbuffer)
 		- [Ring Buffer](#ringbuffer)
-
+- [Trie](#trie)
 ---
 
 #### Stack
@@ -158,3 +158,32 @@ public mutating func dequeue() -> T? {
 |--|--|--|--|--|--|
 |write index||→|w||
 |read index||→|r||
+
+---
+
+#### Trie
+
+Collection 타입의 데이터를 저장하는 데 유용한 트리이다. 
+
+```[Trie 예시 다이어그램]```
+
+Trie 에 단어 ```Swift``` 를 저장하려고 하면, 각각의 ```Character``` 들이 ```node``` 를 형성하여 Trie 에 저장된다. 
+
+이러한 데이터 구조는 특히 ```prefix matching``` 에 아주 유용하게 사용된다. 
+
+물론 prefix matching 을 위해서 아래와 같은 방법을 이용할 수도 있다. 
+
+```swift
+var words: [String] = [...]
+
+func findMatchingWords(prefixWords: String) -> [String] {
+	return words.filter { $0.hasPrefix(prefixWords) }
+}
+```
+
+좋다. 위의 방법도 나쁘진 않다. 데이터의 양이 많지 않다면.
+
+words 의 Element 수가 어마어마하게 늘어난다면, 그때도 의자에 앉아 태평하게 위 함수를 호출하는 것으로 만족할 수 있을까?
+1억 개가 넘는 방문을 일일이 두드려 '여기 ** 단어 계십니까?' 하고 물어볼 수 있을까?
+
+그래서 우리는 이렇게 일일이 탐색하는 대신 Trie 의 도움을 빌려 필요한 브런치만 가져와서 원하는 단어를 찾을 수 있다. 

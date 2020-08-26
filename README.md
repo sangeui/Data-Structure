@@ -2,6 +2,7 @@
 - [Stack](#stack)  
 - [Queues](#queues)  
 	-  [Array based Queue](#queuearray)
+    - [Double Stack based Queue](#queuedoublestack)
 	- [Linked list based Queue](#queuelinkedlist)
 	- [Ring buffer based Queue](#queueringbuffer)
 		- [Ring Buffer](#ringbuffer)
@@ -96,6 +97,7 @@ public mutating func dequeue() -> T? {
 
 따라서 배열을 이용한 Queue 의 구현은 간단할지 몰라도 보다 나은 성능이 요구된다면 다른 방법을 이용해야 할 것이다. 
 
+##### QueueDoubleStack
 
 ##### QueueLinkedList
 ##### QueueRingBuffer

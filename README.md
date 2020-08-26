@@ -99,6 +99,28 @@ public mutating func dequeue() -> T? {
 
 ##### QueueLinkedList
 ##### QueueRingBuffer
+
+아래 설명될 Ring buffer (circular list) 를 이용한 Queue 의 구현이다. 
+
+###### Performance Table
+|Operations|Average case|Worst case|
+|--|--|--|
+|enqueue|O(1)|O(1)
+|dequeue|O(1)|O(1)
+|Space Complexity|O(n)|O(n)
+
+위의 퍼포먼스 테이블을 살펴보면 Linked list 를 이용한 Queue 와 동일하다. 다만, Ring buffer 라는 데이터 구조가 고정되 사이즈를 가지므로 가득 찬 상태의 버퍼에 추가로 enqueue 연산을 수행한다면 이는 실패하게 된다. 
+
+###### Enqueue · Dequeue
+```swift
+public mutating func enqueue(_ element: T) -> Bool {
+	ringBuffer.write(element)
+}
+public mutating func dequeue() -> T? {
+	ringBuffer.read()
+}
+```
+
 ##### RingBuffer
 
 링 버퍼 또는 원형 버퍼 (A circular buffer) 라고도 부른다. 

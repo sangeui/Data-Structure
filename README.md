@@ -97,7 +97,30 @@ public mutating func dequeue() -> T? {
 
 따라서 배열을 이용한 Queue 의 구현은 간단할지 몰라도 보다 나은 성능이 요구된다면 다른 방법을 이용해야 할 것이다. 
 
+---
+
 ##### QueueDoubleStack
+
+왜 하나가 아닌 두개의 스택을 이용해서 Queue 를 구현하려는 것일까?
+
+결론만 살펴보자면, Array-based Queue 에 비해 O(n) 의 ```dequeue``` 연산을 ```amortized O(1)``` 연산으로 만들고 Ring buffer based Queue 에 비해 고정된 크기를 갖지 않아 완전히 동적인 구조가 된다. 
+
+Linked list based Queue 에 비하면 Stack 의 기반 구조가 되는 Array 가 메모리 블록 내에서 연속적으로 배치가 되기 때문에 ```spacial locality``` 측면에서 이점을 챙길 수 있다. 
+
+###### Implementation
+```swift
+struct QueueStack<T>: Queue {
+	private var dequeueStack: [T] = []
+	private var enqueueStack: [T] = []
+	public init() {}
+}
+```
+
+변수 이름에서 알 수 있듯이, dequeue 연산을 위한 stack 과 enqueue 연산을 위한 stack 을 하나씩 만든다.
+
+이 두 스택을 이용해서 어떻게 Queue 의 동작들을 구현할 수 있을까?
+
+
 
 ##### QueueLinkedList
 ##### QueueRingBuffer

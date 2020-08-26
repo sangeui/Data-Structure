@@ -1,33 +1,32 @@
 import Foundation
 
-public struct QueueRingBuffer<T>: QueueProtocol {
-    private var ringBuffer: RingBuffer<T>
+public struct QueueStack<T>: QueueProtocol {
+    private var dequeueStack: [T] = []
+    private var enqueueStack: [T] = []
+    public init() {}
     
-    public init(count: Int) {
-        ringBuffer = RingBuffer<T>(count: count)
-    }
     public var isEmpty: Bool {
-        ringBuffer.isEmpty
+        dequeueStack.isEmpty && enqueueStack.isEmpty
     }
     public var peek: T? {
-        ringBuffer.first
+        dequeueStack.isEmpty ? enqueueStack.first : dequeueStack.last
+//        !dequeueStack.isEmpty ? dequeueStack.last : enqueueStack.first
     }
 }
-// MARK: - Enqueue
-extension QueueRingBuffer {
+extension QueueStack {
     public mutating func enqueue(_ element: T) -> Bool {
-        ringBuffer.write(element)
+        enqueueStack.append(element)
+        return true
     }
 }
-// MARK: - Dequeue
-extension QueueRingBuffer {
+extension QueueStack {
     public mutating func dequeue() -> T? {
-        ringBuffer.read()
+        if dequeueStack.isEmpty {
+            dequeueStack = enqueueStack.reversed()
+            enqueueStack.removeAll()
+        }
+        return dequeueStack.popLast()
     }
 }
-// MARK: - CustomStringConvertible
-extension QueueRingBuffer: CustomStringConvertible {
-    public var description: String {
-        String(describing: ringBuffer)
-    }
-}
+
+

@@ -127,6 +127,11 @@ struct QueueStack<T>: Queue {
 
 이때, Stack 의 기반 구조가 되는 Array 는 동적으로 사이즈를 변경하기 때문에 사이즈는 고려하지 않아도 된다. 다만, 사이즈 변경이 일어나게 되는 시점에는 O(n) 의 연산이 발생하게 된다. 
 
+###### Dequeue 동작 이미지
+![the image for queuestack's queueing](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/queuestack_dequeue.png)
+
+Dequeue 는 왼쪽 스택에서 발생한다. 왼쪽 스택에 Element 가 존재하는 경우 단순히 이를 가져온다. 그렇지 않을 경우, 오른쪽 스택의 Element 들을 거꾸로 뒤집어서 왼쪽 스택으로 가져온 다음에 하나씩 리턴한다. 
+
 
 
 ##### QueueLinkedList

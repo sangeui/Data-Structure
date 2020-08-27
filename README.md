@@ -120,8 +120,8 @@ struct QueueStack<T>: Queue {
 
 이 두 스택을 이용해서 어떻게 Queue 의 동작들을 구현할 수 있을까?
 
-#### Enqueue 동작 그림
-![the figure of queuestack's enqueing](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/queuestack_enqueue.pdf)
+#### Enqueue 동작 이미지
+![the image for queuestack's enqueing](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/queuestack_enqueue.png)
 
 
 

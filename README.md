@@ -132,7 +132,7 @@ struct QueueStack<T>: Queue {
 
 Dequeue 는 왼쪽 스택에서 발생한다. 왼쪽 스택에 Element 가 존재하는 경우 단순히 이를 가져온다. 그렇지 않을 경우, 오른쪽 스택의 Element 들을 거꾸로 뒤집어서 왼쪽 스택으로 가져온 다음에 하나씩 리턴한다. 
 
-
+---
 
 ##### QueueLinkedList
 ##### QueueRingBuffer

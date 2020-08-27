@@ -120,8 +120,12 @@ struct QueueStack<T>: Queue {
 
 이 두 스택을 이용해서 어떻게 Queue 의 동작들을 구현할 수 있을까?
 
-#### Enqueue 동작 그림
-![the figure of queuestack's enqueing](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/queuestack_enqueue.pdf)
+###### Enqueue 동작 이미지
+![the image for queuestack's enqueing](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/queuestack_enqueue.png)
+
+위 그림에서 볼 수 있듯이 Enqueue 는 해당 엘리먼트를 반드시 오른쪽 스택으로 넣는다. 
+
+이때, Stack 의 기반 구조가 되는 Array 는 동적으로 사이즈를 변경하기 때문에 사이즈는 고려하지 않아도 된다. 다만, 사이즈 변경이 일어나게 되는 시점에는 O(n) 의 연산이 발생하게 된다. 
 
 
 

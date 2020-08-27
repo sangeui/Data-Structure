@@ -120,7 +120,7 @@ struct QueueStack<T>: Queue {
 
 이 두 스택을 이용해서 어떻게 Queue 의 동작들을 구현할 수 있을까?
 
-#### Enqueue 동작 이미지
+###### Enqueue 동작 이미지
 ![the image for queuestack's enqueing](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/queuestack_enqueue.png)
 
 위 그림에서 볼 수 있듯이 Enqueue 는 해당 엘리먼트를 반드시 오른쪽 스택으로 넣는다. 

@@ -1,11 +1,12 @@
 ### Table of Contents
 - [Stack](#stack)  
-- [Queues](#queues)  
+- [Queue](#queues)  
 	-  [Array based Queue](#queuearray)
     - [Double Stack based Queue](#queuedoublestack)
 	- [Linked list based Queue](#queuelinkedlist)
 	- [Ring buffer based Queue](#queueringbuffer)
 		- [Ring Buffer](#ringbuffer)
+- [Tree](#Tree)
 - [Trie](#trie)
 ---
 
@@ -217,6 +218,91 @@ public mutating func dequeue() -> T? {
 |--|--|--|--|--|--|
 |write index||→|w||
 |read index||→|r||
+
+---
+
+#### Tree
+
+![the image for tree](https://github.com/sangeui/Data-Structure/blob/master/Resources/Images/Tree.png)
+
+최상위 노드를 기준으로 뒤집어 보면 마치 나무의 모습이 된다. 
+
+트리는 `노드` 들로 구성이 되는데, 각 노드들은 개별적인 값과 그 `children` 을 갖는다. 
+
+트리에서 최상위에 있는 노드를 `root`, 가장 아래에서 자식을 갖지 않는 노드를 `leaf` 라고 부른다. 
+
+트리는 (1) `노드들` 로 구성된다 했으며 각 노드들은 `값` 과 `자식 노드` 들을 갖는다고 했다.
+
+```swift
+class Node<T> {
+	var value: T
+	var children: [Node] = []
+	init(_ value: T) {
+		self.value = value
+	}
+}
+```
+
+트리를 형성하기 위한 최소한의 노드가 완성되었다. 
+
+이제 이 노드에 `자식 노드` 를 더하는 동작을 추가해본다. 
+
+```swift
+extension Node {
+	func add(_ child: Node) {
+		self.children.append(child)
+	}
+}
+```
+
+그런데 이것만 가지고는 트리를 효율적으로 사용할 수 없다. 일일이 노드의 자식 노드를 꺼내보고 확인하고 비교하는 등의 일은 상상만 하더라도 비효율적이다.
+
+그래서 `traversing` 을 도입해보자.
+
+여행자 한 명이 어떤 트리의 `root` 에 도착했다. 이 여행자는 이 트리의 모든 노드에 방문해보겠다는 꿈을 가지고 있다. 
+
+이 여행자는 곰곰이 생각하다가 두가지 방법을 떠올린다.
+
+1. 같은 층에 있는 노드들을 먼저 방문한다.
+2. 노드들과 그 자식들을 먼저 방문해보고, 다른 노드로 건너간다.
+
+1번과 같은 방식은 각 노드가 위치해 있는 층, 즉 레벨에 따라 방문을 하므로 `Level-order` 가 된다. 
+2번과 같은 방식은 각 노드를 중심으로 자식들을 찾아 아래까지 방문했다가 다시 올라와 다른 노드를 방문하므로 `Depth-first` 가 된다. 
+
+먼저 `Depth-first` 의 구현은 아래와 같으며 재귀를 사용한다. 
+
+```swift
+typealias Visit = (Node) -> Void
+extension Node {
+	func depthFirstOrder(visit: Visit) {
+		visit(self)
+		children.forEach { child in
+			child.depthFirstOrder(visit: visit)
+		}
+	}
+}
+```
+
+먼저 해당 노드를 방문한 다음, 자식 노드를 순서대로 같은 방식으로 방문했다. 
+
+다음으로 `Level order` 를 살펴보면, 다음과 같으며 `Queue` 구조를 사용했다는 것을 볼 수 있다.
+
+```swift
+typealias Visit = (Node) -> Void
+extension Node {
+	func levelOrder(visit: Visit) {
+		visit(self)
+		var queue = Queue<Node>()
+		children.forEach { queue.enqueue($0) }
+		while let node = queue.dequeue() {
+			visit(node)
+			node.children.forEach { queue.enqueue($0) }
+		}
+	}
+}
+```
+
+다소 직관적으로 위처럼 두 종류의 `traversing` 을 구현할 수 있다.
 
 ---
 

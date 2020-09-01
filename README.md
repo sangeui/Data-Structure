@@ -7,7 +7,8 @@
 	- [Ring buffer based Queue](#queueringbuffer)
 		- [Ring Buffer](#ringbuffer)
 - [Tree](#Tree)
-- [Trie](#trie)
+	- [Binary Tree](#BinaryTree)
+	- [Trie](#trie)
 ---
 
 #### Stack
@@ -303,6 +304,56 @@ extension Node {
 ```
 
 다소 직관적으로 위처럼 두 종류의 `traversing` 을 구현할 수 있다.
+
+---
+#### BinaryTree
+
+기본 트리는 자식의 수에 제한이 없었다. 하지만 `Binary tree` 는 자식을 최대 한 쌍까지만 가질 수 있다. 
+
+구현은 기본 트리와 유사하다. 
+```swift
+class BinaryNode<Element> {
+	var value: Element
+	var left: BinaryNode?
+	var right: BinaryNode?
+	
+	init() {...{
+}
+```
+
+노드 자신이 가질 `value` 변수를 선언하고 `left`, `right` 자식 노드를 위한 변수를 선언한다. 자식 노드는 `nil` 을 가지는 것이 가능하므로, `optional` 로 선언하는 것이 바람직하다. 
+
+기본 트리에서는 Traversal algorithms 으로 `level-order` 와 `depth-first` 알고리즘을 살펴보았는데, `Binary tree` 에서도 이와 유사한 알고리즘을 갖고 있다. 
+
+```
+In-order traversal
+1. 노드가 왼쪽 자식노드를 갖고 있다면 이를 방문한다.
+2. 자신을 방문한다. -> in
+3. 오른쪽 자식을 갖는다면, 1번의 방식으로 이를 방문한다.
+
+left.inorder(visit: visit)
+visit(value)
+right.inorder(visit: visit)
+
+Pre-order traversal
+1. 자신을 방문한다. -> pre
+2. 왼쪽 자식노드를 갖고 있다면 이를 방문한다.
+3. 오른쪽 자식노드를 갖고 있다면 이를 방문한다.
+
+visit(value)
+left.preorder(visit: visit)
+right.preorder(visit: visit)
+
+Post-order traversal
+1. 왼쪽 자식노드를 갖고 있다면 이를 방문한다.
+2. 오른쪽 자식노드를 갖고 있다면 이를 방문한다. 
+3. 자신을 방문한다. -> post
+
+left.preorder(visit: visit)
+right.preorder(visit: visit)
+visit(value)
+```
+
 
 ---
 

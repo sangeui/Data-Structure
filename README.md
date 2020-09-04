@@ -383,6 +383,27 @@ Array 와 BST 를 대표적인 연산에 따라 비교해본다.
 - Array: 삽입 연산과 마찬가지로, 마지막 요소의 제거를 제외하면 각 요소들을 한칸씩 당기는 작업이 필요하므로 **O(n)** 복잡도를 가진다. 
 - BST: 삭제할 노드를 찾기 위해서 역시 탐색 연산을 사용한다. 하지만 이 노드가 자식 노드를 가졌을 때 추가적인 작업이 필요하다. 하지만 그래도 Array 와 비교했을 때 훨씬 효율적임을 알 수 있다. 
 
+**삽입 연산 구현**
+
+```swift
+
+extension BST {
+	public mutating func insert(_ value: Element) {
+		root = insert(from: root, value: value)
+	}
+	private func insert(from node: BinaryNode<Element>?, value: Element) -> BinaryNode<Element> {
+	guard let node = node else { return BinaryNode(value: value) }
+	
+	if value < node.value {
+		node.left = insert(from: node.left, value: value)
+	} else {
+		node.right = insert(from: node.right, value: value)
+	}
+	return node
+}
+
+```
+
 ---
 
 #### Trie

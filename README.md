@@ -10,6 +10,7 @@
 	- [Binary Tree](#BinaryTree)
 	- [Binary Search Tree](#BinarySearchTree)
 	- [Trie](#trie)
+	- [Heap](#Heap)
 ---
 
 #### Stack
@@ -404,6 +405,8 @@ extension BST {
 
 ```
 
+[수정 중]
+
 ---
 
 #### Trie
@@ -432,3 +435,112 @@ words 의 Element 수가 어마어마하게 늘어난다면, 그때도 의자에
 1억 개가 넘는 방문을 일일이 두드려 '여기 ** 단어 계십니까?' 하고 물어볼 수 있을까?
 
 그래서 우리는 이렇게 일일이 탐색하는 대신 Trie 의 도움을 빌려 필요한 브런치만 가져와서 원하는 단어를 찾을 수 있다. 
+
+[수정 중]
+
+---
+#### Heap
+
+`Heap` 또는 `Complete binary tree`, 아니면 `Binary heap`.
+
+배열로도 구현될 수 있다. 
+
+1. **Max** heap, 더 큰 값이 더 높은 우선순위를 갖는다.
+2. **Min** heap, 더 작은 값이 더 높은 우선순위를 갖는다. 
+
+**heap invariant** or **heap property**
+
+* `max heap` 은 항상 부모 노드가 자식 노드들보다 크거나 같은 값을 가져야 한다. 
+* `min heap` 은 항상 부모 노드가 자식 노드들보다 작거나 같은 값을 가져야 한다.
+* 마지막 레벨을 제외한 모든 레벨에 노드들이 꽉 차 있어야 한다. 
+
+**Heap의 응용** 
+
+- 어떤 `collection` 이 주어졌을 때, 최대·최소값 계산하기
+- Heap 정렬
+- 우선순위 큐 구축
+- 그래프 알고리즘 구축 (Prim's · Dijkstra's)
+
+**Heap의 표현**
+
+Heap 은 `완전 이진트리` 의 특성을 가지지만, 각 레벨 사이의 관계를 이용해 `배열` 을 이용해서 표현이 가능하다. 
+
+배열 임의의 인덱스 `i` 가 주어졌을 때, 왼쪽 자식의 인덱스는 `(i*2)+1`, 오른쪽 자식의 인덱스는 `(i*2) + 2` 가 된다. 반대로 임의의 인덱스 `j` 가 주어졌을 때, 이 인덱스의 부모 인덱스는 `(j-1)/2` 이다. 
+
+**Heap 연산**
+
+Heap 구조에서 삽입을 하든 삭제를 하든 가장 중요한 포인트는, 최종적으로 Heap 의 노드들이 그 규칙에 맞춰 유지되어 있어야 한다는 것이다. 
+
+삽입·삭제 연산의 알고리즘은 유사하다. 
+
+* 삽입: 배열의 가장 마지막에 새로운 값을 추가한다. 이때, Heap 이 깨질 수 있으므로, `Sift up` 연산을 통해 Heap 을 다시 맞춰준다. 
+
+```swift
+// Insertion
+extension Heap {
+	mutating func insert(_ element: Element) {
+		// 마지막에 값 삽입
+		elements.append(element)	
+		// 마지막 값에 의해 heap 이 깨질 수 있으므로
+		// 해당 값부터 siftup.
+		siftup(from: elements.count-1) 
+	}
+}
+```
+
+`Sift up` 연산은 가장 마지막 인덱스에서 시작해, 그 부모 노드를 따라가면서 정렬 기준에 맞춰 재정렬하는 것이다. 
+
+```swift
+extension Heap {
+	mutating func siftup(from index: Int) {
+		var child = index
+		var parent = parentIndex(of: child)
+		while child > 0 && sort(elements[child], elements[parent]) {
+			elements.swapAt(child, parent)
+			child = parent
+			parent = parentIndex(of: child)
+		}
+	}
+}
+```
+
+* 삭제: 첫번째와 마지막 값을 서로 교환한 뒤, 바뀐 마지막 값을 반환한다. 마찬가지로 Heap 이 깨질 수 있으므로, `Sift down` 연산을 통해 Heap 을 재정렬한다. 
+
+```swift
+extension Heap {
+	mutating func remove() -> Element? {
+		guard !isEmpty else { return nil }
+		elements.swapAt(0, count-1)
+		defer { siftdown(from: 0) }
+		return elements.removeLast()
+	}
+}
+```
+
+`Sift down` 연산은 배열의 가장 첫번째 요소부터 시작해 아래로 내려간다. 
+
+```swift
+extension Heap {
+	mutating func siftdown(from index: Int) {
+		var parent = index
+		while true {
+			let left = leftChildIndex(of: parent)
+			let right = rightChildIndex(of: parent)
+			var candidate = parent
+			if left < count && sort(elements[left], elements[candidate]) {
+				candidate = left
+			}
+			if right < count && sort(elements[left], elements[candidate]) {
+				candidate = right
+			}
+			if candidate = parent {
+				return
+			}
+			elements.swapAt(parent, candidate)
+			parent = candidate
+		}
+	}
+}
+```
+
+---

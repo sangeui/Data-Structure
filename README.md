@@ -11,6 +11,7 @@
 	- [Binary Search Tree](#BinarySearchTree)
 	- [Trie](#trie)
 	- [Heap](#Heap)
+- [Priority Queue](#PriorityQueue)
 ---
 
 #### Stack
@@ -542,5 +543,36 @@ extension Heap {
 	}
 }
 ```
-
 ---
+#### PriorityQueue
+
+기본 큐가 `FIFO` 방식으로 동작한다면, `Priority Queue` 는 그 우선순위에 따라 동작한다. 
+
+1. Max-priority
+2. Min-priority
+
+**Applications**
+
+- Dijkstra's alogorithm: 최소 비용 계산을 위해 우선순위 큐를 사용한다.
+- A* pathfinding algorithm: 가장 짧은 길이의 경로를 만들어낼 수 있는, 아직 탐색되지 않은 루트를 추적하기 위해 우선순위 큐를 사용한다. 
+- Heap sort: 우선순위 큐를 이용해 구현될 수 있다.
+- Huffman coding: `compression tree` 를 구축한다. 
+
+우선순위 큐 또한 위에서 살펴 본 기본 큐와 마찬가지로, 다양한 방법으로 구현될 수 있다. 
+
+1. Sorted array: 마찬가지로 가장 심플한 방법이다. 다만 삽입·삭제 후 요소 정렬 등의 이유로 비효율적이다.
+2. Balanced binary search tree: `Double ended` 우선순위 큐 구현에 있어서 유용하다. 
+3. Heap: 우선순위 큐를 구현할 때 가장 흔한 방법이다. 
+
+**Heap을 이용한 구현**
+
+사실 내부적으로 `Heap` 에서 처리하므로, 우선순위 큐의 구현은 프로토콜에 맞춰 필요한 `Heap` 연산을 호출하면 된다. 
+
+```swift
+func enqueue(_ element: Element) {
+	heap.insert(element)
+}
+func dequeue() -> Element? {
+	heap.remove()
+}
+```

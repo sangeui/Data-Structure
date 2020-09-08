@@ -576,3 +576,132 @@ func dequeue() -> Element? {
 	heap.remove()
 }
 ```
+---
+#### Graph
+
+객체 간의 관계를 보여주는 자료구조. `vertices` 와 `edges` 로 구성. 
+
+각 객체는 `vetex` 로 표현이 가능하며, 이들 객체를 잇는 건 `edge` 가 담당한다. 
+
+**Weighted graphs**
+
+모든 `edge` 는 `가중치` 를 가진다. 이 가중치를 통해 두 객체 간의 가장 비용이 적게 드는 경로를 찾을 수 있고, 가장 짧은 경로를 찾을 수도 있다. 
+
+**Directed graphs**
+
+방향을 갖는 그래프. 이 그래프는 각각의 `edge` 에 대해 주어진 방향으로만 움직일 수 있다. 
+
+**Undirected graphs**
+
+움직일 수 있느 방향에 제약이 주어지지 않는다.
+
+**Graph Protocol**
+
+그래프는 두가지 방법으로 구현될 수 있는데, `Adjacency list` 와 `Adjacency matrix` 이다.
+
+먼저 그래프가 가져야할 공통된 오퍼레이션을 가지는 프로토콜을 정의한다. 
+
+```swift
+protocol Graph {
+	associatedtype E
+	func create_vertex(data: E) -> Vertex<E>
+	func add(edge: Edge,
+			 source: Vertex<E>
+			 destination: Vertex<E>
+			 weight: Double?)
+	func add_directed_edge(source: Vertex<E>,
+						   destination: Vertex<E>,
+						   weight: Double?)
+	func add_undirected_edge(source: Vertex<E>,
+							 destination: Vertex<E>,
+							 weight: Double?)
+	func edges(source: Vertex<E>) -> [Edge<E>]
+	func weight(source: Vertex<E>, 
+				destination: Vertex<E>) -> Double?
+}
+```
+
+`create_vertex` 는 노드를 하나 만드는 메소드이다. 당연히 여기서 만들어진 노드는 어떤 간선도 가지지 않는다.
+
+`add` 는 전달 받은 `edge` 의 종류에 따라 관련한 메소드를 호출한다. 
+
+`add_directed_edge` 와 `add_undirected_edge` 는 각각 방향을 가지는 간선과 그렇지 않은 간선을 만든다. 
+
+`edges` 는 `source` 가 가지는 모든 간선을 돌려준다.
+
+`weight` 는 `source` 로부터 `destination` 까지의 간선이 가지는 가중치를 돌려준다. 
+
+`Vertex` 와 `Edge` 의 구현은 생략한다.
+
+**Adjacency list**
+
+어떤 노드가 주어졌을 때 해당 노드와 인접한 노드들을 배열의 형태로 저장한다. 
+가령, `A` 라는 노드가 있고 그 인접 노드로 `B`, `C` 그리고 `D` 가 있다면 그 형태는 아래와 같다.
+ 
+```A → B, C, D```
+
+이번에는 `B` 라는 노드가 있고 그 인접 노드로 `A` 와 `D` 가 있을 때, 그 형태는 위에 이어서 다음과 같다.
+
+```A → B, C, D```
+```B → A, D```
+
+모양을 살펴보면 좌측에는 노드를, 우측에는 이 노드가 가지는 인접 노드가 있음을 알 수 있다. 
+따라서 이를 저장하기 위해 우리는 `Dictionary` 을 사용할 수 있고 타입은 다음과 같다.
+
+`[Vertex<T>: [Edge<T>]]`
+
+`Adjacency list` 에서 노드를 추가하는 것은 딕셔너리에 값을 가지지 않는 새로운 키를 추가하는 것이다. 
+
+```swift
+func create_vertex(data: T) -> Vertex<T> {
+	let vertex = Vertex(index: adjacencies.count, data: data)
+	adjacencies[vertex] = []
+	return vertex
+}
+```
+
+노드 `A` 의 인접 노드 `B` 를 추가하려면, 해당 노드를 직접 추가할 수도 있겠지만 그보다는 두 노드 사이의 `Edge` 를 추가함으로써 이 관계를 유지할 수 있다. 
+
+```swift
+func add_directed_edge(source: Vertex<T>,
+					   destination: Vertex<T>,
+					   weight: Double?) {
+	let edge = Edge(source: source,
+					destination: destination,
+					weight: weight)
+	adjacencies[source]?.append(edge)					   
+}
+```
+
+방향을 가지지 않는 그래프에 새로운 간선을 추가하려면 `source` 와 `destination` 번갈아서 총 두 번의 `add_directed_edge` 를 호출한다. 
+
+```swift
+func add_undirected_edge(source: Vertex<T>,
+					     destination: Vertex<T>,
+					     weight: Double?) {
+	add_directed_edge(source: source, 
+					  destination: destination, 
+					  weight: weight)
+	add_directed_edge(source: destination, 
+					  destination: source, 
+					  weight: weight)	
+}
+```
+
+어떤 노드가 주어졌을 때, 해당 노드가 가지는 간선을 가져오려면 딕셔너리에서 해당 노드를 키로 가지는 모든 값을 돌려주면 된다.
+
+```swift
+func edges(source: Vertex<T>) -> [Edge<T>] {
+	adjacencies[source] ?? []
+}
+```
+
+두 노드 사이의 가중치를 알고 싶다면, `source` 가 가지는 모든 간선들을 탐색하여 `destination` 으로 향하는 간선을 찾고 이에 대한 가중치를 돌려준다. 
+
+```swift
+func weight(source: Vertex<T>, destination: Vertex<T>) -> Double? {
+	return edges(source: source)
+		   .first { $0.destination == destination }?
+		   .weight
+}
+```

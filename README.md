@@ -12,6 +12,7 @@
 	- [Trie](#trie)
 	- [Heap](#Heap)
 - [Priority Queue](#PriorityQueue)
+- [Graph](#Graph)
 ---
 
 #### Stack
